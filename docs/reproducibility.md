@@ -1,0 +1,21 @@
+# Reproducibility
+
+The release ships three independently fitted realizations of each backbone's STI-RVQ bank, their storage metadata, depth curves, occupancy-conditioned loss tables, and frozen planner policy. The bank tensors are independently fitted for the two backbones. The normalization tensors use two-byte storage; shared codebooks use FP16 and the Walsh–Hadamard matrix uses FP32. Fitting and calibration source are retained alongside the evaluated reader and planner.
+
+Original codebook locations are preserved as relative paths under `artifacts/` so the frozen configuration and bank hashes remain valid. A source release can be checked without copying any model weights into Git. Native reconstruction and answer checks require an external model snapshot and video inputs. Large external GSRQ/NOVA fitted banks are generated from their calibration drivers or supplied in the documented package layouts, rather than counted as a free deployed codec.
+
+All six independently fitted shared banks and their planning tables use the same 64 WorldSense videos. A fixed hash assignment provides 22/21/21 sources at 64/128/256 frames; these are input geometries, not source-duration categories. Both backbones receive identical resized pixels and source clocks, but have separate codebooks and normalization tensors. STI-RVQ and GSRQ use gold-option gradient norms, CQ uses coordinate Fisher weights, and NOVA uses media-prefix moments. Planning losses use media prefixes without questions or answer labels. No Video-MME or TempCompass feature samples, labels, or loss measurements are used in this calibration. Per-side loss normalizers use a common one-stage G8/f1/8 reference. The fixed CQ capacity/coupling formats are operating-point parameters; their centroids are refitted, without selecting formats from benchmark answer scores. The WorldSense source identifiers are anonymous; this protocol does not certify disjoint underlying YouTube origins. See [calibration preparation](calibration.md).
+
+Baseline sources retain their published criteria and the actual charged format. Two different papers use the name AnchorKV: the coverage/importance selector of Wang et al. is the quantitative control; the anchor–residual representation of Khalaf et al. is discussed as related work. Both the paper and baseline guide distinguish them.
+
+The full source includes internal historical namespaces because moving their arithmetic into new classes would create a different implementation. The supported public entrypoint is `scripts/evaluate.py`. Fused reconstruction is used on VL-7B; Omni-3B uses its evaluated fused cache reader. Native attention remains the consumer of the reconstructed BF16 keys and values.
+
+## External baseline banks
+
+Pass `--method gsrq` or `--method nova-kv` with `--baseline-root /path/to/model-matched-banks`. The root contains `artifacts/ar22/private_tiers/R{2,4,8}` for Omni GSRQ, the package path in `configs/ar22/NOVA8.json` for Omni NOVA, `artifacts/ar31/packages/GSRQExport/R{3,6,7}` for VL Video-MME, `artifacts/ar26/packages/GSRQExport/R1` for VL TempCompass, and `artifacts/ar30/packages/NOVA_g8_C{16,256}` for VL NOVA. Each package has its completed fitting receipt and per-layer tensors. Model-matched fitting implementations and native calibration drivers are included; large private codebooks are external inputs and are still fully charged at evaluation. A budget-infeasible video emits an `INFEASIBLE` record for all of its questions, and the aggregate accuracy is undefined if any declared input is infeasible.
+
+The coverage selectors need no fitted bank and are supported by `--method snapkv`, `anchorkv`, `pyramidkv`, `expected-attention`, `infinipot-v`, or `cords`. All compress the complete video prefix before the question, protect native nonvisual prefix positions, retain native source coordinates, and reserve query capacity under the same budget.
+
+## Independent repetitions
+
+[Three-run details](three_runs.md) specify all numerical seeds, fitting formulas, frozen capacities and paired aggregation rules. The two extra runs fit new codebooks and regenerate codec-dependent loss tables. They retain the same complete benchmark manifests, and do not select seeds using test accuracy.

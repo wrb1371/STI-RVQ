@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+external_inputs/
+outputs/
+/results/
+artifacts/ar22/processor_inputs/
+*.log

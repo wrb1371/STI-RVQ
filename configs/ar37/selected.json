@@ -1,0 +1,40 @@
+{
+  "groups": {
+    "Omni/VideoMME_long_64": {
+      "C": 256,
+      "c": 8
+    },
+    "Omni/VideoMME_medium_32": {
+      "C": 128,
+      "c": 8
+    },
+    "Omni/TempCompass-MC_short_16": {
+      "C": 64,
+      "c": 8
+    },
+    "Omni/VideoMME_short_16": {
+      "C": 64,
+      "c": 8
+    },
+    "VL/VideoMME_long_96": {
+      "C": 128,
+      "c": 8
+    },
+    "VL/VideoMME_medium_64": {
+      "C": 32,
+      "c": 4
+    },
+    "VL/TempCompass-MC_short_16": {
+      "C": 64,
+      "c": 16
+    },
+    "VL/VideoMME_short_32": {
+      "C": 32,
+      "c": 4
+    }
+  },
+  "format_rule": "Operating-point formats frozen before WorldSense refitting; no format reselection in this migration.",
+  "calibration_sources": "manifests/ar39/WorldSense_CAL64_ids.json",
+  "centroids_refitted_on": "WorldSense64",
+  "benchmark_answer_selection": false
+}
