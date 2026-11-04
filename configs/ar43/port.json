@@ -1,0 +1,21 @@
+{
+  "paper": "https://arxiv.org/abs/2608.02901",
+  "implementation": "independent finite-video port",
+  "window": 32,
+  "anchor_ratio_denominator": 128,
+  "scored_anchor_fraction": 0.7,
+  "pooling_width": 7,
+  "residual_bits": 2,
+  "coefficient_format": "FP16",
+  "anchor_format": "BF16",
+  "residual_scale_format": "FP32",
+  "gaussian_level_convention": "outer_normalized",
+  "convention_selection": "Unlabeled holdout reconstruction error on the same64WorldSense videos per backbone; one global choice, no evaluation QA",
+  "query_reservation_format": "BF16",
+  "seeds": [
+    42,
+    1000045,
+    2000048
+  ],
+  "position_maps_shared_across_layers": true
+}

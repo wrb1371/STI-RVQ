@@ -64,6 +64,7 @@ def main():
             "bf16",
             "snapkv",
             "anchorkv",
+            "anchorkv-residual",
             "pyramidkv",
             "expected-attention",
             "infinipot-v",
@@ -80,7 +81,7 @@ def main():
     ap.add_argument(
         "--reference-reader",
         action="store_true",
-        help="Use the independent PyTorch reader for VL-7B",
+        help="Use the independent PyTorch reader instead of a verified fused reader",
     )
     ap.add_argument(
         "--save-state-dir",
@@ -124,7 +125,24 @@ def main():
             teacher = None
             native_cache = None
             try:
-                if a.method == "cq":
+                if a.method == "anchorkv-residual":
+                    from ar43kv.runtime import Teacher
+                    from ar43kv.codec import preflight
+                    if a.reference_reader:
+                        from ar43kv.codec import Codec
+                    else:
+                        from ar43fast.reader import Codec
+                    teacher = Teacher(model, kind)
+                    pp = pos[:, :end] if kind == "Omni" else pos[:, 0, :end]
+                    oracle = preflight(teacher.geo, len(vi), len(ti),
+                                       questions[0]["query_reservation_tokens"],
+                                       2 if int(pp.max()) <= 32767 else 4,
+                                       int(round(questions[0]["budget_mib"] * 2**20)))
+                    if not oracle["feasible"]:
+                        raise RuntimeError("INFEASIBLE_ANCHOR_RESIDUAL_FIXED_FORMAT " + json.dumps(oracle))
+                    teacher.capture(x, pos, end, min(32, len(vi)))
+                    codec = Codec(model, kind, questions[0], pos, vi, ti, end, teacher, run_seed)
+                elif a.method == "cq":
                     from ar37cq.runtime import Teacher
                     from ar37cq.codec import Codec
 

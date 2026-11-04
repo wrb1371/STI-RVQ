@@ -63,3 +63,5 @@ python scripts/evaluate.py --method cq --backbone vl7b --model-dir external_inpu
 ```
 
 Planner admission and CPU boundary checks: [docs/planner_boundaries.md](docs/planner_boundaries.md).
+
+The [paper-based AnchorKV residual port](docs/anchor_residual.md) is available as `--method anchorkv-residual`, distinct from `--method anchorkv` (selection).
