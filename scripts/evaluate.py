@@ -175,7 +175,7 @@ def main():
                     teacher.capture(x, pos, end)
                 elif kind == "VL":
                     from ar26kv.runtime import Teacher
-                    from ar26kv.codec import Codec
+                    from ar42kv.boundary import BoundaryVLCodec as Codec
 
                     teacher = Teacher(model)
                     model._ar26_grid = identity["grid"]
@@ -247,7 +247,7 @@ def main():
                         spec = {"family": "BF16"}
                     else:
                         name = {
-                            "sti-rvq": "A25_S000_RO",
+                            "sti-rvq": "A42_BOUNDARY_RO",
                             "infinipot-v": "InfiniPot",
                             "cords": "CoRDS",
                             "gsrq": "GSRQTier",

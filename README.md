@@ -61,3 +61,5 @@ CQ is an independent port of Zhang et al. (NeurIPS 2024). It uses Fisher-weighte
 ```bash
 python scripts/evaluate.py --method cq --backbone vl7b --model-dir external_inputs/Qwen2.5-VL-7B-Instruct --baseline-root external_inputs/cq_banks --manifest external_inputs/questions.json --output outputs/cq_vl7b.jsonl
 ```
+
+Planner admission and CPU boundary checks: [docs/planner_boundaries.md](docs/planner_boundaries.md).
