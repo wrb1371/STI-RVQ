@@ -51,5 +51,7 @@ This command loads no model and uses no GPU. It returns `INFEASIBLE` only when
 the lower bound proves rejection. Otherwise it returns `UNDETERMINED`, never
 `COMPLETE` or `FEASIBLE`: a full physical-layout audit and actual native scoring
 would still be required. It does not manufacture predictions, a zero score,
-or three completed inference runs. The paper's infeasible marker follows this
+or three completed inference runs. OmniKVQuant is omitted from Table 2 because
+its unchanged visual indices exceed the assigned budgets; the experiment text
+explains the exclusion in one sentence. The checker follows the
 [complete-cache protocol](evaluation_protocol.md).

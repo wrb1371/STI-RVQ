@@ -30,7 +30,7 @@ Video-MME uses64/128/256 sampled input frames for short/medium/long videos. Tota
 - `src/ar35kv/`: geometry-generic fused reconstruction with exact reference rounding.
 - `src/ar25kv/simple_v1.py`, `src/ar24kv/pressure_switch_v1.py`, `src/ar22kv/`: evaluated Omni-3B planner, encoder, stored layout and query path.
 - `src/r14kv/fitting.py` and calibration scripts: residual codebook fitting and label-free table construction.
-- [Current baseline guide](docs/baselines.md): CQ, GSRQ, InfiniPot-V, CoRDS, SnapKV, AnchorKV (selection), AnchorKV (residual), PyramidKV, Expected Attention, and the OmniKVQuant K2/V2 admission check. [Evaluation protocol](docs/evaluation_protocol.md) defines the current table, calibration and query-buffer accounting. [Optional historical implementations](docs/optional_baselines.md), including NOVA-KV, remain available separately.
+- [Current baseline guide](docs/baselines.md): CQ, GSRQ, InfiniPot-V, CoRDS, SnapKV, AnchorKV (selection), AnchorKV (residual), PyramidKV, and Expected Attention. [Evaluation protocol](docs/evaluation_protocol.md) defines the current table, calibration and query-buffer accounting. [Optional historical implementations](docs/optional_baselines.md), including NOVA-KV, remain available separately. [OmniKVQuant budget screening](docs/omnikvquant.md) documents its exclusion from Table 2.
 - `src/ar33kv/`: controlled ablations with the same frozen codec.
 
 Internal implementation namespaces retain their experiment identifiers to keep the evaluated arithmetic and buffer layouts traceable. Public commands use the method and backbone names.

@@ -121,6 +121,6 @@ Expected Attention estimates how future queries will attend to stored keys [pap
 
 Khalaf et al.’s anchor–residual method is separate from the selector above. Our independent finite-video port retains BF16 anchors, signed projections and selected two-bit residuals; it charges the complete BF16 query reservation and all maps. The [full representation and calibration specification](anchor_residual.md) describes the fixed format, output-sensitive selection, WorldSense-held-out level choice, physical packing, and native scoring command. Use `--method anchorkv-residual`.
 
-## OmniKVQuant
+## Budget exclusion: OmniKVQuant
 
-[OmniKVQuant](omnikvquant.md) adapts local key ranges and modality-specific value rotations. The current main-table entry uses a conservative admission screen of the original K2/V2 representation, retaining every sampled visual position. Its index-only lower bound is independent of any fitted rotation and never assigns answer quality. A rejected bound maps to the table’s infeasible marker; a passing bound remains undecided until the complete physical format has been checked.
+[OmniKVQuant](omnikvquant.md) adapts local key ranges and modality-specific value rotations. It is excluded from Table 2 because the original K2/V2 visual indices alone exceed the assigned budgets. The retained admission checker documents this exclusion without assigning answer quality. Its lower bound is independent of any fitted rotation; a passing bound remains undecided until the complete physical format has been checked.

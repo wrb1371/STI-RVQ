@@ -12,13 +12,15 @@ This document describes the current main comparison. It is shared by the
   Attention: finite-video selection ports.
 - AnchorKV (residual): independent finite-video anchor–residual port, distinct
   from the same-name selection method.
-- OmniKVQuant: admission check of its original K2/V2 format; see
-  [the representation and budget checker](omnikvquant.md).
 - STI-RVQ: shared residual codec, temporal representation and joint allocation.
 
 NOVA-KV is retained as an [optional historical implementation](optional_baselines.md).
 Its presence in the source or argument parser does not make it a current
 main-table row or a Figure 1 comparison.
+
+OmniKVQuant is omitted from Table 2 because its original K2/V2 visual indices
+alone exceed the assigned budgets. Its [representation and budget checker](omnikvquant.md)
+document this exclusion separately.
 
 ## Inputs and budgets
 
@@ -69,8 +71,7 @@ claim that the authors evaluated that backbone.
 
 Numeric main and ablation cells aggregate three complete runs. Deterministic
 controls may reuse unchanged observations under the identity checks described in
-[three_runs.md](three_runs.md). An unscored admission entry has no three-run
-quality mean.
+[three_runs.md](three_runs.md). Admission checks do not constitute quality runs.
 
 ## Reader statistics
 
