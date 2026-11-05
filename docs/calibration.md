@@ -27,8 +27,9 @@ CUDA_VISIBLE_DEVICES=0 python scripts/ar39_fit.py --model VL --replicate 0
 ```
 
 Repeat fitting for replicas 1 and 2. Each capture uses frozen backbone parameters;
-WorldSense gold-option gradients weight shared RVQ/GSRQ/CQ fitting. NOVA uses
-prefix covariance and feature samples without label weights. After all fits,
+WorldSense gold-option gradients weight shared RVQ/GSRQ/CQ fitting. The fitting
+driver also retains an optional historical NOVA path using label-free prefix
+moments; that path is not a current main-table method. After the shared fits,
 run `ar39_calibrate.py --model Omni --shard 0` for shards 0, 1, and 2 for both models,
 then `ar39_calibrate.py --aggregate Omni` and `--aggregate VL`.
 The planning-loss measurement uses no question or answer. It regenerates the

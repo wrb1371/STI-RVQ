@@ -1,12 +1,4 @@
-% Official publication records preferred; see review/ar36_revision/REFERENCE_AUDIT.json.
-% Formal source URLs are retained as sourceurl metadata; reports and code print their URLs.
-
-@misc{stirvqcode,
-  title = {{STI-RVQ}: Video {KV} Cache Compression and Fused Reconstruction},
-  year = {2026},
-  howpublished = {Public source release, branch sti-rvq},
-  url = {https://github.com/wrb1371/tac-vq-kv-cache/tree/sti-rvq}
-}
+% References used by the current manuscript; formal publication records are preferred.
 
 @misc{qwenomni,
   title = {{Qwen2.5-Omni} Technical Report},
@@ -314,35 +306,6 @@
   url = {https://arxiv.org/abs/2502.13923}
 }
 
-@inproceedings{perception,
- title = {{Perception Test}: A Diagnostic Benchmark for Multimodal Video Models},
- author = {Patraucean, Viorica and Smaira, Lucas and Gupta, Ankush and Recasens, Adria and Markeeva, Larisa and Banarse, Dylan and Koppula, Skanda and Heyward, Joseph and Malinowski, Mateusz and Yang, Yi and Doersch, Carl and Matejovicova, Tatiana and Sulsky, Yury and Miech, Antoine and Fr\'{e}chette, Alexandre and Klimczak, Hanna and Koster, Raphael and Zhang, Junlin and Winkler, Stephanie and Aytar, Yusuf and Osindero, Simon and Damen, Dima and Zisserman, Andrew and Carreira, Joao},
- booktitle = {Advances in Neural Information Processing Systems},
- volume = {36},
- year = {2023},
- pages = {42748--42761},
- doi = {10.52202/075280-1852},
- sourceurl = {https://proceedings.neurips.cc/paper_files/paper/2023/hash/8540fba4abdc7f9f7a7b1cc6cd60e409-Abstract-Datasets_and_Benchmarks.html}
-}
-
-@inproceedings{clevrer,
- title = {{CLEVRER}: Collision Events for Video Representation and Reasoning},
- author = {Yi, Kexin and Gan, Chuang and Li, Yunzhu and Kohli, Pushmeet and Wu, Jiajun and Torralba, Antonio and Tenenbaum, Joshua B.},
- booktitle = {International Conference on Learning Representations},
- year = {2020},
- sourceurl = {https://iclr.cc/virtual_2020/poster_HkxYzANYDB.html}
-}
-
-@inproceedings{motionbench,
- title = {{MotionBench}: Benchmarking and Improving Fine-grained Video Motion Understanding for Vision Language Models},
- author = {Hong, Wenyi and Cheng, Yean and Yang, Zhuoyi and Wang, Weihan and Wang, Lefan and Gu, Xiaotao and Huang, Shiyu and Dong, Yuxiao and Tang, Jie},
- booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
- year = {2025},
- pages = {8450--8460},
- doi = {10.1109/CVPR52734.2025.00791},
- sourceurl = {https://openaccess.thecvf.com/content/CVPR2025/html/Hong_MotionBench_Benchmarking_and_Improving_Fine-grained_Video_Motion_Understanding_for_Vision_CVPR_2025_paper.html}
-}
-
 @inproceedings{tempcompass,
  title={{TempCompass}: Do Video {LLMs} Really Understand Videos?},
  author={Yuanxin Liu and Shicheng Li and Yi Liu and Yuxiang Wang and Shuhuai Ren and Lei Li and Sishuo Chen and Xu Sun and Lu Hou},
@@ -362,12 +325,6 @@
  sourceurl = {https://proceedings.iclr.cc/paper_files/paper/2026/hash/55dc32df563a35bf406717fb52c118d5-Abstract-Conference.html}
 }
 
-@IEEEtranBSTCTL{STIRVQbst,
- CTLuse_forced_etal = {yes},
- CTLmax_names_forced_etal = {6},
- CTLnames_show_etal = {3}
-}
-
 @inproceedings{cq,
  author = {Tianyi Zhang and Jonah Yi and Zhaozhuo Xu and Anshumali Shrivastava},
  title = {{KV} Cache is 1 Bit Per Channel: Efficient Large Language Model Inference with Coupled Quantization},
@@ -378,4 +335,92 @@
  doi = {10.52202/079017-0109},
  sourcepublisher = {Curran Associates, Inc.},
  sourceurl = {https://proceedings.neurips.cc/paper_files/paper/2024/hash/05d6b5b6901fb57d2c287e1d3ce6d63c-Abstract-Conference.html}
+}
+
+@inproceedings{kvquant,
+ author = {Hooper, Coleman and Kim, Sehoon and Mohammadzadeh, Hiva and Mahoney, Michael W. and Shao, Yakun Sophia and Keutzer, Kurt and Gholami, Amir},
+ booktitle = {Advances in Neural Information Processing Systems},
+ doi = {10.52202/079017-0040},
+ pages = {1270--1303},
+ title = {{KVQuant}: Towards 10 Million Context Length {LLM} Inference with {KV} Cache Quantization},
+ sourceurl = {https://proceedings.neurips.cc/paper_files/paper/2024/file/028fcbcf85435d39a40c4d61b42c99a4-Paper-Conference.pdf},
+ volume = {37},
+ year = {2024}
+}
+
+@inproceedings{zipcache,
+ author = {He, Yefei and Zhang, Luoming and Wu, Weijia and Liu, Jing and Zhou, Hong and Zhuang, Bohan},
+ booktitle = {Advances in Neural Information Processing Systems},
+ doi = {10.52202/079017-2181},
+ pages = {68287--68307},
+ title = {{ZipCache}: Accurate and Efficient {KV} Cache Quantization with Salient Token Identification},
+ sourceurl = {https://proceedings.neurips.cc/paper_files/paper/2024/file/7e57131fdeb815764434b65162c88895-Paper-Conference.pdf},
+ volume = {37},
+ year = {2024}
+}
+
+@inproceedings{minicache,
+ author = {Liu, Akide and Liu, Jing and Pan, Zizheng and He, Yefei and Haffari, Gholamreza and Zhuang, Bohan},
+ booktitle = {Advances in Neural Information Processing Systems},
+ doi = {10.52202/079017-4443},
+ pages = {139997--140031},
+ title = {{MiniCache}: {KV} Cache Compression in Depth Dimension for Large Language Models},
+ sourceurl = {https://proceedings.neurips.cc/paper_files/paper/2024/file/fd0705710bf01b88a60a3d479ea341d9-Paper-Conference.pdf},
+ volume = {37},
+ year = {2024}
+}
+
+@inproceedings{h2o,
+ author = {Zhang, Zhenyu and Sheng, Ying and Zhou, Tianyi and Chen, Tianlong and Zheng, Lianmin and Cai, Ruisi and Song, Zhao and Tian, Yuandong and R\'{e}, Christopher and Barrett, Clark and Wang, Zhangyang "Atlas" and Chen, Beidi},
+ booktitle = {Advances in Neural Information Processing Systems},
+ doi = {10.52202/075280-1506},
+ pages = {34661--34710},
+ title = {{H2O}: Heavy-Hitter Oracle for Efficient Generative Inference of Large Language Models},
+ sourceurl = {https://proceedings.neurips.cc/paper_files/paper/2023/file/6ceefa7b15572587b78ecfcebb2827f8-Paper-Conference.pdf},
+ volume = {36},
+ year = {2023}
+}
+
+@inproceedings{cachegen,
+ author = {Liu, Yuhan and Li, Hanchen and Cheng, Yihua and Ray, Siddhant and Huang, Yuyang and Zhang, Qizheng and Du, Kuntai and Yao, Jiayi and Lu, Shan and Ananthanarayanan, Ganesh and Maire, Michael and Hoffmann, Henry and Holtzman, Ari and Jiang, Junchen},
+ title = {{CacheGen}: {KV} Cache Compression and Streaming for Fast Large Language Model Serving},
+ booktitle = {Proceedings of the ACM SIGCOMM 2024 Conference},
+ pages = {38--56},
+ year = {2024},
+ doi = {10.1145/3651890.3672274},
+ sourceurl = {https://dl.acm.org/doi/10.1145/3651890.3672274}
+}
+
+@article{productquantization,
+ author = {Herv{\'e} J{\'e}gou and Matthijs Douze and Cordelia Schmid},
+ title = {Product Quantization for Nearest Neighbor Search},
+ journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+ volume = {33},
+ number = {1},
+ pages = {117--128},
+ year = {2011},
+ doi = {10.1109/TPAMI.2010.57},
+ sourceurl = {https://doi.org/10.1109/TPAMI.2010.57}
+}
+
+@inproceedings{quarot,
+ author = {Ashkboos, Saleh and Mohtashami, Amirkeivan and Croci, Maximilian L. and Li, Bo and Cameron, Pashmina and Jaggi, Martin and Alistarh, Dan and Hoefler, Torsten and Hensman, James},
+ booktitle = {Advances in Neural Information Processing Systems},
+ doi = {10.52202/079017-3180},
+ pages = {100213--100240},
+ title = {{QuaRot}: Outlier-Free 4-Bit Inference in Rotated {LLMs}},
+ sourceurl = {https://proceedings.neurips.cc/paper_files/paper/2024/file/b5b939436789f76f08b9d0da5e81af7c-Paper-Conference.pdf},
+ volume = {37},
+ year = {2024}
+}
+
+@misc{omnikvquant,
+ author = {Suho Yoo and Hyunjong Ok and Jongmin Choi and Jihoo Jung and Joon Son Chung},
+ title = {{OmniKVQuant}: {KV} Cache Quantization for {Omni-LLMs}},
+ year = {2026},
+ eprint = {2609.11582},
+ archiveprefix = {arXiv},
+ primaryclass = {cs.CV},
+ url = {https://arxiv.org/abs/2609.11582},
+ sourceurl = {https://github.com/kaistmm/OmniKVQuant}
 }

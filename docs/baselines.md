@@ -1,6 +1,6 @@
 # Baseline Algorithms and Implementations
 
-This guide specifies the baselines reported in the paper’s main accuracy table. Each method uses the backbone, sampled frames, original video clock, and reserved query capacity in the input and budget protocol in the README. Codebooks and rules are frozen before evaluation.
+This guide specifies the current main-table methods and their admission rules; the [evaluation protocol](evaluation_protocol.md) is the shared source of settings. NOVA-KV is documented under [optional historical implementations](optional_baselines.md). Each method uses the backbone, sampled frames, original video clock, and reserved query capacity in the input and budget protocol in the README. Codebooks and rules are frozen before evaluation.
 
 ## Common Evaluation and Storage Contract
 
@@ -44,20 +44,6 @@ GSRQ learns residual codebooks using gain--shape $K$-means [paper](https://proc
 
 The Video-MME banks occupy 9/18/36 MiB on Omni-3B and 21/42/49 MiB on VL-7B for short/medium/long inputs. VL-7B TempCompass uses a one-stage, 7 MiB bank. The loaded depth is the largest bank whose equal-depth K/V layout fits every input in its declared budget group. Per-video encoding may use a shorter prefix, but the entire loaded bank is charged. The seven-stage VL long-video bank is a physical copy of the corresponding prefix of the frozen larger bank. Native keys are encoded before MRoPE and rotated once at their original positions after reconstruction.
 
-## NOVA-KV
-
-NOVA-KV derives transforms that preserve attention products [paper](https://arxiv.org/abs/2608.04074). For centered row-vector keys, let $\Sigma_q$ be the query second moment and $\Sigma_k$ the key covariance. If $U$ contains eigenvectors of $\Sigma_q^{1/2}\Sigma_k\Sigma_q^{1/2}$, its full-rank analysis and synthesis factors can be written as $$F_K=\Sigma_q^{1/2}U,\qquad
- A_K=\Sigma_q^{-1/2}U,\qquad F_KA_K^\top=I.
- $$ The transform coefficients are normalized by their root-mean-square magnitude $\rho_i$ and partitioned into groups. Each group stores its nearest codeword index. Reconstruction uses $$\begin{aligned}
- \mathbf z_i&=(\mathbf k_i-\boldsymbol\mu_K)F_K/\rho_i,\\
- \widehat{\mathbf k}_i&=\boldsymbol\mu_K+\rho_i\widehat{\mathbf z}_iA_K^\top.
- \end{aligned}
- $$ An orthogonal value transform is obtained from attention-output second moments. Values are scalar-quantized in that basis and transformed back for attention.
-
-**Implementation.** the paper’s main accuracy table uses group dimension eight throughout. A geometry-only rule chooses between 256- and 16-codeword key banks, then checks the fixed value-precision and full-precision-band menus against the total-budget inequality above. Key indices occupy eight or four bits per group. Value candidates use affine two-bit, affine one-bit, or sign one-bit coding; affine coding clips transformed values at their per-vector 92nd absolute percentile. The first/recent full-precision band candidates are $(64,256)$, $(32,128)$, and $(0,0)$ tokens. All transforms, means, FP8 E5M2 centroids, scales, offsets, bands, and migration capacity are charged.
-
-VL-7B uses native query and attention-output statistics from the 24 media-only calibration prefixes, with its four KV heads and seven query heads per KV head. The selected short/medium/long banks have 16/256/16 codewords under 32/64/96 MiB; all three use affine one-bit values. NOVA-KV quantizes keys after native MRoPE, so its reader returns post-MRoPE keys directly. It does not rotate them a second time.
-
 ## InfiniPot-V
 
 InfiniPot-V removes temporally redundant tokens and preserves large-value features [paper](https://arxiv.org/abs/2506.15745). For token $i$, let $\mathcal R_i$ contain recent-frame tokens at the same spatial patch. The two selection criteria are $$\begin{aligned}
@@ -97,7 +83,7 @@ SnapKV selects historical keys using attention from the last $W=64$ prefix posit
 
 **Implementation.** BF16 probabilities are summed over observations and averaged within GQA groups. We protect the observation window and native text, then select visual top-$k$ positions before seeing a question. Ordered BF16 K/V pairs obey the retained-token capacity formula above. Defaults follow the released implementation.
 
-## AnchorKV
+## AnchorKV (selection)
 
 AnchorKV combines local coverage with causal-attention importance [paper](https://aclanthology.org/2026.emnlp-main.2428/). Normalized keys define a block mean direction $\boldsymbol\mu_{h,\mathcal B}$. For sampled query positions $\Omega_i$ that causally observe $i$, its score is $$\begin{aligned}
  d_{h,i}&=1-\cos(\widehat{\mathbf k}_{h,i},
@@ -130,3 +116,11 @@ Expected Attention estimates how future queries will attend to stored keys [pap
  \left[\operatorname{softmax}_{j}(z_{a,j})_i+0.02\right].
  \end{aligned}
  $$ **Implementation.** We use full covariance, value-norm scaling, an additive offset of 0.02, four protected sink positions, and 512 future positions, following the paper's standard benchmark settings. Means and covariances use every prefix query after the four sinks, computed in 32-bit floating point. Future text positions start after the maximum native prefix coordinate and advance all three MRoPE axes together. We average the native rotations and transform the moments as in the released code. Scores use native post-MRoPE keys, average probabilities within GQA groups, and exclude the four sinks from softmax normalization. Text and sinks are protected; visual top-$k$ pairs use the uniform-layer BF16 capacity in the retained-token capacity formula above. Neither the current question nor its answer enters the statistics or ranking.
+
+## AnchorKV (residual)
+
+Khalaf et al.’s anchor–residual method is separate from the selector above. Our independent finite-video port retains BF16 anchors, signed projections and selected two-bit residuals; it charges the complete BF16 query reservation and all maps. The [full representation and calibration specification](anchor_residual.md) describes the fixed format, output-sensitive selection, WorldSense-held-out level choice, physical packing, and native scoring command. Use `--method anchorkv-residual`.
+
+## OmniKVQuant
+
+[OmniKVQuant](omnikvquant.md) adapts local key ranges and modality-specific value rotations. The current main-table entry uses a conservative admission screen of the original K2/V2 representation, retaining every sampled visual position. Its index-only lower bound is independent of any fitted rotation and never assigns answer quality. A rejected bound maps to the table’s infeasible marker; a passing bound remains undecided until the complete physical format has been checked.

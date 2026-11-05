@@ -12,11 +12,9 @@ For replicate `j in {0,1,2}`, add `delta_j = j * 1000003` to every original meth
 | STI-RVQ stage `t` initialization, either backbone | `17261023 + 1600 + 1000*s + t` |
 | Omni GSRQ layer `l`, head `h` | `14261021 + 4*l + 2*s + h` |
 | VL GSRQ layer `l`, head `h` | `14261021 + 10000*s + 10*l + h` |
-| Omni NOVA layer `l`, head `h` | `14261021 + 2*l + h` |
-| VL NOVA layer `l`, head `h` | `14261021 + 4*l + h` |
 | CQ layer `l`, side `s`, dictionary size `C`, coupling `c` | `20261031 + 100000*l + 10000*s + C + c` |
 
-The current fits use 256 visual samples per head and video, with every fourth position held out and 192 training samples per source. Shared RVQ draws 262,144 subvectors across layers and heads. NOVA uses the complete training pool for each head; it has no additional 140000-offset subsample. The formats and Lloyd iteration counts remain fixed: 20 for shared RVQ, 40 for GSRQ, and 25 for NOVA; CQ retains its documented restarts. All three realizations are freshly fitted on WorldSense. Normalization uses the same deterministic training subset for every realization.
+The current fits use 256 visual samples per head and video, with every fourth position held out and 192 training samples per source. Shared RVQ draws 262,144 subvectors across layers and heads. The formats and Lloyd iteration counts remain fixed: 20 for shared RVQ and 40 for GSRQ; CQ retains its documented restarts. Optional historical NOVA seeds and fitting rules are documented separately. All three realizations are freshly fitted on WorldSense. Normalization uses the same deterministic training subset for every realization.
 
 BF16 and token selectors have no fitted calibration parameters. Their unchanged actual observations can be reused when model weights, inputs, algorithm and budgets are identical; no artificial run variance is added.
 

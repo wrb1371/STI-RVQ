@@ -21,7 +21,7 @@ python scripts/evaluate.py --backbone vl7b --model-dir external_inputs/Qwen2.5-V
 python scripts/evaluate.py --backbone omni3b --model-dir external_inputs/Qwen2.5-Omni-3B --manifest external_inputs/questions.json --output outputs/omni3b.jsonl
 ```
 
-Video-MME uses64/128/256 sampled input frames for short/medium/long videos. Total budgets are16/32/64MiB on Omni-3B and32/64/96MiB on VL-7B, with192/256/288 reserved query tokens. TempCompass MC uses64frames,16MiB and192reserved tokens on both models. The budget includes codebooks, transforms, normalization, packed codes, gains, maps, protected text and all prepaid query capacity. The primary scorer is greedy first-token option-letter decoding; option-argmax is diagnostic only.
+Video-MME uses64/128/256 sampled input frames for short/medium/long videos. Total budgets are16/32/64MiB on Omni-3B and32/64/96MiB on VL-7B, with192/256/288 reserved query tokens. TempCompass MC uses64frames,16MiB and192reserved tokens on both models. The budget includes codebooks, transforms, normalization, packed codes, gains, maps, protected text and all prepaid query capacity. This is a comparison of complete cache schemes. Every method reserves the same number of question/answer tokens, using its own supported storage representation. STI-RVQ compresses this reserve as part of its format, so the bytes it saves are available for video storage; the comparison does not force equal video-only allocations. The primary scorer is greedy first-token option-letter decoding; option-argmax is diagnostic only.
 
 ## Source map
 
@@ -30,7 +30,7 @@ Video-MME uses64/128/256 sampled input frames for short/medium/long videos. Tota
 - `src/ar35kv/`: geometry-generic fused reconstruction with exact reference rounding.
 - `src/ar25kv/simple_v1.py`, `src/ar24kv/pressure_switch_v1.py`, `src/ar22kv/`: evaluated Omni-3B planner, encoder, stored layout and query path.
 - `src/r14kv/fitting.py` and calibration scripts: residual codebook fitting and label-free table construction.
-- [Baseline implementation guide](docs/baselines.md): CQ, GSRQ, NOVA-KV, InfiniPot-V, CoRDS, SnapKV, AnchorKV, PyramidKV and Expected Attention. These are finite-video, question-independent ports; the guide records parameters, GQA adaptation and byte accounting.
+- [Current baseline guide](docs/baselines.md): CQ, GSRQ, InfiniPot-V, CoRDS, SnapKV, AnchorKV (selection), AnchorKV (residual), PyramidKV, Expected Attention, and the OmniKVQuant K2/V2 admission check. [Evaluation protocol](docs/evaluation_protocol.md) defines the current table, calibration and query-buffer accounting. [Optional historical implementations](docs/optional_baselines.md), including NOVA-KV, remain available separately.
 - `src/ar33kv/`: controlled ablations with the same frozen codec.
 
 Internal implementation namespaces retain their experiment identifiers to keep the evaluated arithmetic and buffer layouts traceable. Public commands use the method and backbone names.
@@ -44,7 +44,7 @@ python scripts/verify_reader.py --state outputs/states/VIDEO_ID.pt
 CUDA_VISIBLE_DEVICES=0 python scripts/benchmark_reader.py --state outputs/states/*.pt --output outputs/reader_benchmark.json
 ```
 
-The reader check compares all reconstructed BF16 values, not only answers. Exact-input native question tests also compare first tokens, option logits, and the charged resident bytes. Operator benchmarks compare the reference, vectorized Torch, and fused readers using warmups and alternating CUDA-event measurements on the same packed state; they record other GPU processes. Compression quality and operator speed are measured separately.
+The reader check compares all reconstructed BF16 values, not only answers. Exact-input native question tests also compare first tokens, option logits, and the charged resident bytes. Operator benchmarks compare the reference, vectorized Torch, and fused readers using warmups and alternating CUDA-event measurements on the same packed state. Compression quality and operator speed are measured separately. For the reconstruction table, take the maximum scratch allocation over videos within each operating point, then compute its Torch/fused reduction from unrounded bytes. A range over individual-video ratios is a different statistic.
 
 Both backbones use the same 64 WorldSense videos for every fitted codebook, normalization tensor, and planning loss table. The common calibration inputs are video-text only. Codebook importance weights come from WorldSense calibration questions; planning losses use media prefixes without their questions or answers. Video-MME and TempCompass provide no samples or loss measurements to these fits. The current test question and answer never enter compression. Each fitted compressor is reused on both evaluation datasets without further fitting. The complete benchmark reports include all2700Video-MME and1580TempCompass MC questions per model. [Reproducibility notes](docs/reproducibility.md) describe the fitted artifacts and how to prepare external baseline banks; aggregate tables are not substitutes for executing inference.
 
